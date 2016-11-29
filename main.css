@@ -1,0 +1,19 @@
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+form {
+    border: 1px solid black;
+    padding: 20px 30px 20px 30px;
+}
+
+.q-area input {
+	margin-bottom: 15px; 
+}
+
+.right-wrong {
+	display: inline;
+}
+
