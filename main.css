@@ -17,3 +17,10 @@ form {
 	display: inline;
 }
 
+/*.hidden {
+	display: none;
+}*/
+
+.answers {
+	list-style: none;
+}
