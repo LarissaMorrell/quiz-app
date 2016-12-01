@@ -2,11 +2,11 @@ var questions = []; //array of question# objects
 
 
 //State modification functions
-var Question = function(quest, ans, ansIndex) {
-    this.question = quest;
-    this.answers = ans;
-    this.correctAnswerIndex = ansIndex;
-    this.currentlyDisplayed = false;
+function Question(prompt, answers, correctAnswerIndex) {
+    this.prompt = prompt;
+    this.answers = answers;
+    this.correctAnswerIndex = correctAnswerIndex;
+    currentlyDisplayed = false;
 }
 
 //objects
@@ -24,48 +24,65 @@ questions.push(question5);
 
 
 
-//main action
-function nextQuestion() {
 
-    console.log("next question");
+function nextQuestion(questionNum) {
 
 
-    for (var i = 0; i < questions.length; i++) {
+    displayQuestion(questionNum);
 
-        displayQuestion(i);
+    if (questions[questionNum].currentlyDisplayed && questionNum < 4) {
 
-        if (questions[i].currentlyDisplayed && i < 4) {
+        questions[questionNum].currentlyDisplayed = false;
+        questions[questionNum + 1].currentlyDisplayed = true;
 
-            questions[i].currentlyDisplayed = false;
-            questions[i + 1].currentlyDisplayed = true;
+        //render funtion
 
-            //render funtion
-
-            break;
-        } else if (i == 4) {
-            //end the quiz with final score
+    } else if (questionNum == 4) {
+        //end the quiz with final score
 
 
-        } else { //currently displayed is false so we are at quest 0
+    } else { //currently displayed is false so we are at quest 0
 
-            questions[0].currentlyDisplayed = true;
+        questions[questionNum].currentlyDisplayed = true;
 
-            //render function
-            displayQuestion(questions[0]);
-
-        }
+        //render function
+        //displayQuestion(questions[questionNum]);
     }
 
 }
 
+function checkAnswer(choice, questionNum) {
 
+    correctAnswer = questions[questionNum].correctAnswerIndex;
+
+    //compare correctIndex with the choice
+    if (choice == questions[questionNum].correctIndex) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
+
+
+//Render functions
 
 function displayQuestion(questionNum) {
 
-    $('.js-question-number').text('Question ' + (questionNum + 1) + ' of ' + questions.length);
-    $('.js-question').text(questions[questionNum].question);
+    //for some reason this is outputing 2 lines of code, with one being the object
 
-    $('.js-answers').append(getAnswers(questionNum));
+    $('.js-question-number').text('Question ' + (questionNum + 1) + ' of ' + questions.length);
+
+    //why is prompt undefined?????
+    $('.js-question').text(questions[questionNum].prompt);
+
+    if (questionNum > 0) {
+        //delete existing radio buttons
+        $('ul').children().remove();
+    }
+    //must 
+    $('.js-answers').append(getChoices(questionNum));
 
     $('.right-wrong').hide();
 
@@ -75,7 +92,7 @@ function displayQuestion(questionNum) {
 
 
 
-var getAnswers = function(questionNum) {
+function getChoices(questionNum) {
 
     var answerString = "";
 
@@ -93,17 +110,46 @@ var getAnswers = function(questionNum) {
 
 
 
+
+
+
+
 //Event Listeners
 
 $(document).ready(function() {
+    var questionNum = 0;
+    var submitted = false;
 
-    displayQuestion(0);
+    //nextQuestion(0);
+    displayQuestion(questionNum);
 
-    $('button').on('click', function(event) { //be more specific w button later
+
+    $('.submit').on('click', function(event) {
         event.preventDefault();
-        console.log("submit");
-        nextQuestion();
 
 
+        //take in the numeric numbered radio button, and set equal to choice
+        //but this won't work because radios are not there on page load
+        var choice = $("input[name=choice]:checked").val()
+
+        //check to make sure an answer has been selected
+        if (checkAnswer(choice, questionNum)) {
+            submitted = true;
+
+            //show the correct answer and the score
+        }
+    });
+
+
+
+    $('.next').on('click', function(event) { //be more specific w button later
+        event.preventDefault();
+
+        if (submitted) {
+            //move on to next question
+            nextQuestion(++questionNum);
+
+            submitted = false; //reset
+        }
     });
 });
