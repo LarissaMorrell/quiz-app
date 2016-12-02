@@ -56,7 +56,7 @@ function checkAnswer(choice, questionNum) {
     correctAnswer = questions[questionNum].correctAnswerIndex;
 
     //compare correctIndex with the choice
-    if (choice == questions[questionNum].correctIndex) {
+    if (choice == correctAnswer) {
         return true;
     } else {
         return false;
@@ -120,7 +120,7 @@ $(document).ready(function() {
     var questionNum = 0;
     var submitted = false;
 
-    //nextQuestion(0);
+    $('.next').hide();
     displayQuestion(questionNum);
 
 
@@ -136,14 +136,22 @@ $(document).ready(function() {
         if (checkAnswer(choice, questionNum)) {
             submitted = true;
 
-            //show the correct answer and the score
+            //toggle buttons
+            $('.submit').hide();
+            $('.next').show();
+
+           //show the correct answer and the score
         }
     });
 
 
-
+//input[name='next-question']
     $('.next').on('click', function(event) { //be more specific w button later
         event.preventDefault();
+
+        //toggle buttons
+        $('.submit').show();
+        $('.next').hide();
 
         if (submitted) {
             //move on to next question
