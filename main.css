@@ -13,13 +13,17 @@ form {
 	margin-bottom: 15px; 
 }
 
-.right-wrong {
+.right .wrong {
 	display: inline;
 }
 
-/*.hidden {
-	display: none;
-}*/
+.right {
+	color: green;
+}
+
+.wrong {
+	color: red;
+}
 
 .answers {
 	list-style: none;
