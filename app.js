@@ -83,12 +83,12 @@ function userSubmitFeedback(questionNum) {
     //take in the numeric numbered radio button, and set equal to choice
     var choice = $('input[name=choice]:checked').val()
 
+    //toggle buttons
+    $('.submit').hide();
+    $('.next').show();
+
     //check to make sure the correct answer has been selected
     if (checkAnswer(choice, questionNum)) {
-
-        //toggle buttons
-        $('.submit').hide();
-        $('.next').show();
 
         //show the correct answer and the score
         $('.wrong').remove(); //remove any previous feedback from wrong answers
@@ -98,11 +98,18 @@ function userSubmitFeedback(questionNum) {
 
     } else { //if the children of the form have the class of .wrong
 
+        var correctIndex = questions[questionNum].correctAnswerIndex;
         if (!$('p').hasClass('wrong')) {
-            $('<p class="wrong">Try again.</p>').insertBefore('.progress');
+            $('<p class="wrong">Incorrect. The right answer is ' + questions[questionNum].answers[correctIndex] + '</p>').insertBefore('.progress');
         }
         return false;
     };
+}
+
+
+function updateScore() {
+    pointsEarned += 100 / questions.length;
+    console.log("score is " + pointsEarned);
 }
 
 
@@ -115,41 +122,37 @@ function userSubmitFeedback(questionNum) {
 
 $(document).ready(function() {
     var questionNum = 0;
-    var submitted = false;
 
     $('.next').hide();
     displayQuestion(questionNum);
 
 
+
     $('.submit').on('click', function(event) {
         event.preventDefault();
 
-        //check for end of quiz
-        if (questionNum == questions.length - 1) {
-            $('.js-q-area').children().remove();
-
-        }
-
-        submitted = userSubmitFeedback(questionNum);
-
+        userSubmitFeedback(questionNum);
     });
 
 
-    //input[name='next-question']
     $('.next').on('click', function(event) { //be more specific w button later
         event.preventDefault();
 
+        $('.wrong').remove();
         $('.right').remove();
 
         //toggle buttons
         $('.submit').show();
         $('.next').hide();
 
-        if (submitted) {
-            //move on to next question
-            displayQuestion(++questionNum);
-
-            submitted = false; //reset
+                //check for end of quiz
+        if (questionNum == questions.length - 1) {
+            $('.js-q-area').children().remove();
+            //displayScore
+            console.log(pointsEarned + ' points');
+            return;
         }
+
+        displayQuestion(++questionNum);
     });
 });
