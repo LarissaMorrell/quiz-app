@@ -25,12 +25,14 @@ questions.push(question5);
 
 
 
-function checkAnswer(choice, questionNum) {
+function checkAnswer(questionNum) {
 
-    correctAnswer = questions[questionNum].correctAnswerIndex;
+    //take in the numeric numbered radio button, and set equal to choice
+    var userResponse = $('input[name=choice]:checked').val();
+    var correctResponse = questions[questionNum].correctAnswerIndex;
 
-    //compare correctIndex with the choice
-    if (choice == correctAnswer) {
+    if (userResponse == correctResponse) {
+        pointsEarned += 100 / questions.length;
         return true;
     } else {
         return false;
@@ -44,32 +46,22 @@ function checkAnswer(choice, questionNum) {
 
 function displayQuestion(questionNum) {
 
-    //for some reason this is outputing 2 lines of code, with one being the object
-
     $('.js-question-number').text('Question ' + (questionNum + 1) + ' of ' + questions.length);
-
-    //why is prompt undefined?????
     $('.js-question').text(questions[questionNum].prompt);
 
+    //after first question delete existing radio buttons
     if (questionNum > 0) {
-        //delete existing radio buttons
         $('ul').children().remove();
     }
-    //must 
     $('.js-answers').append(getChoices(questionNum));
-
-    //loop through the questions and display currentlyDidsplayed=true
-
 }
 
 
 
 function getChoices(questionNum) {
-
     var answerString = "";
 
     for (var i = 0; i < 4; i++) {
-
         answerString += '<li><input type="radio" name="choice" value="' + i +
             '">  ' + questions[questionNum].answers[i] + '</li>';
     }
@@ -80,39 +72,34 @@ function getChoices(questionNum) {
 
 
 function userSubmitFeedback(questionNum) {
-    //take in the numeric numbered radio button, and set equal to choice
-    var choice = $('input[name=choice]:checked').val()
 
-    //toggle buttons
-    $('.submit').hide();
-    $('.next').show();
 
-    //check to make sure the correct answer has been selected
-    if (checkAnswer(choice, questionNum)) {
+    if (checkAnswer(questionNum)) {
 
-        //show the correct answer and the score
-        $('.wrong').remove(); //remove any previous feedback from wrong answers
+        //remove previous feedback and show correct answer
+        $('.wrong').remove();
         $('<p class="right">Correct!</p>').insertBefore('.progress');
 
         return true;
 
-    } else { //if the children of the form have the class of .wrong
-
+    } else {
         var correctIndex = questions[questionNum].correctAnswerIndex;
+
         if (!$('p').hasClass('wrong')) {
-            $('<p class="wrong">Incorrect. The right answer is ' + questions[questionNum].answers[correctIndex] + '</p>').insertBefore('.progress');
+            $('<p class="wrong">Incorrect. The right answer is ' +
+                questions[questionNum].answers[correctIndex] + '</p>').insertBefore('.progress');
         }
         return false;
     };
 }
 
 
-function updateScore() {
-    pointsEarned += 100 / questions.length;
-    console.log("score is " + pointsEarned);
+
+function displayScore() {
+
+    $('.js-q-area').children().remove();
+    $('.js-q-area').append('<p>Your score is ' + pointsEarned + '%</p>');
 }
-
-
 
 
 
@@ -127,10 +114,12 @@ $(document).ready(function() {
     displayQuestion(questionNum);
 
 
-
     $('.submit').on('click', function(event) {
         event.preventDefault();
 
+        //toggle buttons
+        $('.submit').hide();
+        $('.next').show();
         userSubmitFeedback(questionNum);
     });
 
@@ -145,11 +134,12 @@ $(document).ready(function() {
         $('.submit').show();
         $('.next').hide();
 
-                //check for end of quiz
+        //check for end of quiz
         if (questionNum == questions.length - 1) {
             $('.js-q-area').children().remove();
-            //displayScore
-            console.log(pointsEarned + ' points');
+
+            displayScore();
+
             return;
         }
 
