@@ -6,26 +6,31 @@
     <meta charset="utf-8">
     <!-- reset -->
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css">
+    <!-- link to fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:500,600" rel="stylesheet">
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
     <!-- link to css -->
     <link rel="stylesheet" type="text/css" href="main.css">
-    <!-- link to fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
 </head>
 
 <body>
-    <div class="container">
-        <main>
-            <h1>Mt. Washington, New Hampshire</h1>
-            <form class="q-area js-q-area">
-                <p class="question-number js-question-number"></p>
+    <div class="overlay"></div>
+    <div class="main-container">
+        <h1 class="center-horizontal">Mount Washington, New Hampshire</h1>
+        <h2>How much do you know? Take the quiz!</h2>
+        <div class="box">
+          <form class="js-q-area center-horizontal">
+              <div class="qa-container">
                 <p class="js-question" value="0"></p>
                 <ul class="answers js-answers">
                 </ul>
-                <p class="progress"></p>
-                <button type="submit" class='submit'>Submit</button>
-                <button type="button" class='next' name="next-question">Next</button>
-            </form>
-        </main>
+              </div>
+              <p class="progress"></p>
+              <button type="submit" class='submit'>Submit</button>
+              <button hidden type="button" class='next' name="next-question">Next</button>
+          </form>
+          <div class="question-number js-question-number"></div>
+        </div>
     </div>
     <!-- link to jquery -->
     <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
