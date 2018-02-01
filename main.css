@@ -64,7 +64,8 @@ button {
   box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-button.submit {
+button.submit,
+button.try-again {
   background-color: #008cba;
 }
 button.next {
@@ -91,18 +92,39 @@ span.feedback {
   display: inline-block;
   min-width: 20px;
 }
-.right {
+div.scoresContainer {
+  width: 100%;
+}
+p.score {
+  margin-top: 50px;
+  text-align: center;
+}
+p.right {
   color: #00a128;
   text-shadow: 4px 4px 5px rgba(0, 186, 46, 0.6);
   font-size: 18px;
 }
-
-.wrong {
+div.right {
+  background-color: #1aaa3e;
+  display: inline-block;
+  width: 20%;
+  text-align: center;
+  border: 5px outset #33b453;
+  line-height: 45px;
+}
+p.wrong {
   color: #d43400;
   text-shadow: 3px 3px 5px rgba(255, 69, 7, 0.6);
   font-size: 18px;
 }
-
+div.wrong {
+  background-color: rgba(216, 72, 25, 0.9);
+  display: inline-block;
+  width: 20%;
+  text-align: center;
+  border: 5px outset #e0704c;
+  line-height: 45px;
+}
 .answers {
   list-style: none;
 }

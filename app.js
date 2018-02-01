@@ -1,5 +1,6 @@
 var questions = []; //array of question# objects
 var pointsEarned = 0;
+var scores = [];
 
 //State modification functions
 function Question(prompt, answers, correctAnswerIndex) {
@@ -58,9 +59,11 @@ function checkAnswer(questionNum) {
   var correctResponse = questions[questionNum].correctAnswerIndex;
 
   if (userResponse == correctResponse) {
-    pointsEarned += 100 / questions.length;
+    // pointsEarned += 100 / questions.length;
+    scores[questionNum] = true;
     return true;
   } else {
+    scores[questionNum] = false;
     return false;
   }
 }
@@ -123,7 +126,24 @@ function displayScore() {
   $(".js-q-area")
     .children()
     .remove();
-  $(".js-q-area").append("<p>Your score is " + pointsEarned + "%</p>");
+
+  console.log(scores);
+  let scoreBlocks = "";
+  let scoreTotal = 0;
+
+  for (let i = 0; i < scores.length; i++) {
+    if (scores[i]) {
+      scoreBlocks += `<div class="scoreBlock right">${i + 1}</div>`;
+      scoreTotal += 100; //we will average this later
+    } else {
+      scoreBlocks += `<div class="scoreBlock wrong">${i + 1}</div>`;
+    }
+  }
+  $(".js-q-area").append(`<div class="scoresContainer">${scoreBlocks}</div>`);
+  $(".js-q-area").append(
+    `<p class="score">Your score is ${scoreTotal / scores.length}%</p>`
+  );
+  $(".js-q-area").append(`<button class="try-again">Try Again</button>`);
 }
 
 //Event Listeners
@@ -164,6 +184,10 @@ $(document).ready(function() {
 
       return;
     }
+
+    $(".try-again").on("click", function(event) {
+      reload();
+    });
 
     displayQuestion(++questionNum);
   });
